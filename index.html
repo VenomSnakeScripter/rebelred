@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Scaled and Icy — Verificador</title>
+  <style>
+    :root{--bg:#000;--fg:#fff}
+    html,body{height:100%;margin:0}
+    body{
+      background:var(--bg);
+      color:var(--fg);
+      font-family: "Courier New", Courier, monospace;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .wrap{
+      text-align:center;
+      max-width:90vw;
+    }
+    h1{
+      margin:0 0 1rem 0;
+      font-size:clamp(2rem,6vw,5rem);
+      letter-spacing:0.06em;
+      font-weight:400;
+    }
+    .input-row{
+      display:flex;
+      gap:0.5rem;
+      justify-content:center;
+      align-items:center;
+      margin-top:0.6rem;
+    }
+    input[type="text"]{
+      background:transparent;
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.25);
+      padding:0.6rem 0.8rem;
+      font:1rem/1 "Courier New", Courier, monospace;
+      outline:none;
+      border-radius:6px;
+      min-width:220px;
+    }
+    input[type="text"]::placeholder{color:rgba(255,255,255,0.35)}
+    button{
+      background:transparent;
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.25);
+      padding:0.55rem 0.8rem;
+      border-radius:6px;
+      cursor:pointer;
+      font:1rem/1 "Courier New", Courier, monospace;
+    }
+    button:active{transform:translateY(1px)}
+    #result{
+      margin-top:1rem;
+      min-height:1.4em;
+      font-size:1rem;
+      opacity:0.98;
+      word-break:break-word;
+    }
+    .muted{color:rgba(255,255,255,0.45);font-size:0.85rem;margin-top:0.6rem}
+  </style>
+</head>
+<body>
+  <main class="wrap" role="main">
+    <h1>Scaled and Icy</h1>
+    <div class="input-row">
+      <input id="guess" type="text" placeholder="Escribe aquí..." aria-label="Caja de texto" />
+      <button id="check">Comprobar</button>
+    </div>
+    <div id="result" aria-live="polite"></div>
+    <div class="muted">Escribe <strong>Clancy Is Dead</strong> (no sensible a mayúsculas) y presiona Comprobar.</div>
+  </main>
+
+  <script>
+    (function(){
+      const target = 'clancy is dead';
+      const secret = "NTDCsDIyJzU5LjEiTiAzMMKwMjgnMTcuMiJF";
+      const input = document.getElementById('guess');
+      const btn = document.getElementById('check');
+      const result = document.getElementById('result');
+
+      function normalize(s){
+        return (s||'').trim().replace(/\s+/g,' ').toLowerCase();
+      }
+
+      function show(text){
+        result.textContent = text;
+      }
+
+      btn.addEventListener('click',()=>{
+        const val = normalize(input.value);
+        if(val === target) show(secret);
+        else show('anagram');
+      });
+
+      // also allow Enter key
+      input.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          btn.click();
+        }
+      });
+
+      // set focus for usability
+      input.focus();
+    })();
+  </script>
+</body>
+</html>
