@@ -1,151 +1,164 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Trench Saga</title>
-  <style>
-    :root{--bg:#000;--fg:#fff}
-    html,body{height:100%;margin:0}
-    body{
-      background:var(--bg);
-      color:var(--fg);
-      font-family: "Courier New", Courier, monospace;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:2rem;
-    }
-    .wrap{
-      text-align:center;
-      max-width:90vw;
-    }
-    h1{
-      margin:0 0 1rem 0;
-      font-size:clamp(2rem,6vw,4rem);
-      letter-spacing:0.06em;
-      font-weight:400;
+<meta charset="UTF-8">
+<title>Trench Questions</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+
+<style>
+    body {
+        background-color: black;
+        color: white;
+        font-family: "Courier New", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
     }
 
-    .input-row{
-      display:flex;
-      gap:0.5rem;
-      justify-content:center;
-      align-items:center;
-      margin-top:0.6rem;
+    #container {
+        width: 80%;
+        max-width: 500px;
     }
 
-    input[type="text"]{
-      background:transparent;
-      color:var(--fg);
-      border:1px solid rgba(255,255,255,0.25);
-      padding:0.6rem 0.8rem;
-      font:1rem/1 "Courier New", Courier, monospace;
-      outline:none;
-      border-radius:6px;
-      min-width:220px;
+    input, button {
+        font-family: "Courier New", monospace;
+        padding: 10px;
+        font-size: 18px;
+        width: 100%;
+        margin-top: 10px;
+        background: #111;
+        border: 1px solid white;
+        color: white;
     }
 
-    input[type="text"]::placeholder{color:rgba(255,255,255,0.35)}
-
-    button{
-      background:transparent;
-      color:var(--fg);
-      border:1px solid rgba(255,255,255,0.25);
-      padding:0.55rem 0.8rem;
-      border-radius:6px;
-      cursor:pointer;
-      font:1rem/1 "Courier New", Courier, monospace;
+    /* PULSE ANIMATIONS */
+    @keyframes pulse-green {
+        0% { box-shadow: 0 0 5px #00ff00; }
+        50% { box-shadow: 0 0 20px #00ff00; }
+        100% { box-shadow: 0 0 5px #00ff00; }
     }
 
-    button:active{transform:translateY(1px)}
-
-    #result{
-      margin-top:1rem;
-      min-height:1.4em;
-      font-size:1rem;
-      opacity:0.98;
-      word-break:break-word;
+    @keyframes pulse-red {
+        0% { box-shadow: 0 0 5px red; }
+        50% { box-shadow: 0 0 20px red; }
+        100% { box-shadow: 0 0 5px red; }
     }
 
-  </style>
+    @keyframes pulse-yellow {
+        0% { box-shadow: 0 0 5px yellow; }
+        50% { box-shadow: 0 0 20px yellow; }
+        100% { box-shadow: 0 0 5px yellow; }
+    }
+
+    .pulse-green { animation: pulse-green 0.6s ease; }
+    .pulse-red { animation: pulse-red 0.6s ease; }
+    .pulse-yellow { animation: pulse-yellow 0.6s ease; }
+</style>
 </head>
+
 <body>
-  <main class="wrap" role="main">
-    <h1>Trench Saga</h1>
 
-    <div id="step1" class="step">
-      <div class="input-row">
-        <input id="q1" type="text" placeholder="When will you perform? (00/00)" />
-        <button id="b1">Enter</button>
-      </div>
-      <div id="r1" class="muted"></div>
-    </div>
+<audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
+<audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-big-failure-2039.wav"></audio>
 
-    <div id="step2" class="step" style="display:none;">
-      <div class="input-row">
-        <input id="q2" type="text" placeholder="Who is the Nova Bishop?" />
-        <button id="b2">Enter</button>
-      </div>
-      <div id="r2" class="muted"></div>
-    </div>
+<div id="container">
+    <h1 id="question"></h1>
+    <input id="answer" type="text">
+    <button onclick="checkAnswer()">ENTER</button>
+    <p id="feedback"></p>
+</div>
 
-    <div id="step3" class="step" style="display:none;">
-      <div class="input-row">
-        <input id="q3" type="text" placeholder="Bandito or Bishop?" />
-        <button id="b3">Enter</button>
-      </div>
-      <div id="r3" class="muted"></div>
-    </div>
-
-    <div id="final" style="display:none; margin-top:1.5rem;">
-      <div id="song" style="margin-bottom:1rem;"></div>
-      <button onclick="location.reload()">Restart</button>
-    </div>
-
-  </main>
-
-  <script>
-    function norm(s){ return (s||'').trim().toLowerCase(); }
-
-    // Step 1
-    document.getElementById('b1').addEventListener('click',()=>{
-      const v = norm(document.getElementById('q1').value);
-      if(v !== '21/12') return;
-      document.getElementById('step1').style.display='none';
-      document.getElementById('step2').style.display='block';
-      document.getElementById('q2').focus();
-    });
-
-    // Step 2
-    document.getElementById('b2').addEventListener('click',()=>{
-      const v = norm(document.getElementById('q2').value);
-      if(v !== 'clancy') return;
-      document.getElementById('step2').style.display='none';
-      document.getElementById('step3').style.display='block';
-      document.getElementById('q3').focus();
-    });
-
-    // Step 3
-    document.getElementById('b3').addEventListener('click',()=>{
-      const v = norm(document.getElementById('q3').value);
-      if(!['bandito','bishop','obispo'].includes(v)) return;
-
-      document.getElementById('step3').style.display='none';
-      document.getElementById('final').style.display='block';
-
-      if(v === 'bandito'){
-        document.getElementById('song').textContent = '<span style="color: yellow;">Song: Levitate</span>';
-      } else {
-        document.getElementById('song').textContent = '<span style="color: red;">Song: City Walls</span>';
-      }
-    });
-  </script>
-<audio id="correctSound" src="correct.mp3"></audio>
-<audio id="finalSound" src="final.mp3"></audio>
 <script>
-  function playCorrect(){ document.getElementById('correctSound').play(); }
-  function playFinal(){ document.getElementById('finalSound').play(); }
+let step = 0;
+
+const questions = [
+    "When will you perform in the Trench Saga? (format 00/00)",
+    "Who is the Nova Bishop?",
+    "Are you a Bandito or a Bishop?"
+];
+
+const answers = [
+    "21/12",
+    "clancy",
+    ["bandito", "bishop"]
+];
+
+function loadQuestion() {
+    document.getElementById("question").textContent = questions[step];
+    document.getElementById("answer").value = "";
+    document.getElementById("answer").focus();
+}
+
+function pulse(element, color) {
+    element.classList.remove("pulse-green", "pulse-red", "pulse-yellow");
+    void element.offsetWidth; // reset animation
+    element.classList.add(color);
+}
+
+function checkAnswer() {
+    let input = document.getElementById("answer");
+    let val = input.value.trim().toLowerCase();
+    let correct = answers[step];
+
+    let correctSound = document.getElementById("correct-sound");
+    let wrongSound = document.getElementById("wrong-sound");
+
+    // Multiple options question
+    if (Array.isArray(correct)) {
+        if (correct.includes(val)) {
+
+            if (val === "bandito") {
+                pulse(input, "pulse-yellow");
+                correctSound.play();
+                showFinal("Song: <span style='color: yellow;'>Levitate</span>");
+            }
+
+            else if (val === "bishop") {
+                pulse(input, "pulse-red");
+                correctSound.play();
+                showFinal("Song: <span style='color: red;'>City Walls</span>");
+            }
+
+            return;
+        } else {
+            pulse(input, "pulse-red");
+            wrongSound.play();
+            return;
+        }
+    }
+
+    // Normal questions
+    if (val === correct) {
+        pulse(input, "pulse-green");
+        correctSound.play();
+        step++;
+
+        if (step >= questions.length) {
+            showFinal("Completed.");
+            return;
+        }
+
+        setTimeout(loadQuestion, 600);
+    } else {
+        pulse(input, "pulse-red");
+        wrongSound.play();
+    }
+}
+
+function showFinal(text) {
+    document.getElementById("container").innerHTML = `
+        <h1>${text}</h1>
+        <button onclick="location.reload()">Restart</button>
+    `;
+}
+
+loadQuestion();
 </script>
+
 </body>
 </html>
+
+
