@@ -2,123 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trench Saga</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trench Saga Q&A</title>
   <style>
-    :root{ --bg:#000; --text:#fff; --muted:rgba(255,255,255,0.6); }
-    html,body{ height:100%; }
+    :root{--bg:#000;--fg:#fff}
+    html,body{height:100%;margin:0}
     body{
-      margin:0;
       background:var(--bg);
-      color:var(--text);
-      font-family: 'Courier New', Courier, monospace;
+      color:var(--fg);
+      font-family: "Courier New", Courier, monospace;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:2rem;
     }
-    .card{
-      width:100%; max-width:680px; text-align:center;
+    .wrap{
+      text-align:center;
+      max-width:90vw;
     }
-    h1{ margin:0 0 1rem 0; font-size: clamp(20px, 4vw, 32px); }
-    .question{ font-size: clamp(16px, 3vw, 20px); margin-bottom:1rem; color:var(--muted); }
-    .controls{ display:flex; gap:0.5rem; justify-content:center; }
+    h1{
+      margin:0 0 1rem 0;
+      font-size:clamp(2rem,6vw,4rem);
+      letter-spacing:0.06em;
+      font-weight:400;
+    }
+
+    .input-row{
+      display:flex;
+      gap:0.5rem;
+      justify-content:center;
+      align-items:center;
+      margin-top:0.6rem;
+    }
+
     input[type="text"]{
-      padding:0.6rem 0.75rem; font-size:16px; width:60%; max-width:420px;
-      background:transparent; border:1px solid rgba(255,255,255,0.15);
-      color:var(--text);
+      background:transparent;
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.25);
+      padding:0.6rem 0.8rem;
+      font:1rem/1 "Courier New", Courier, monospace;
+      outline:none;
+      border-radius:6px;
+      min-width:220px;
     }
+
+    input[type="text"]::placeholder{color:rgba(255,255,255,0.35)}
+
     button{
-      padding:0.6rem 0.9rem; font-size:16px; background:transparent;
-      border:1px solid rgba(255,255,255,0.18); color:var(--text); cursor:pointer;
+      background:transparent;
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.25);
+      padding:0.55rem 0.8rem;
+      border-radius:6px;
+      cursor:pointer;
+      font:1rem/1 "Courier New", Courier, monospace;
     }
-    button:disabled{ opacity:0.4; cursor:not-allowed; }
-    .result{ margin-top:1.5rem; font-size:18px; }
+
+    button:active{transform:translateY(1px)}
+
+    #result{
+      margin-top:1rem;
+      min-height:1.4em;
+      font-size:1rem;
+      opacity:0.98;
+      word-break:break-word;
+    }
+
   </style>
 </head>
 <body>
-  <main class="card">
-    <h1>Trench Saga </h1>
-    <div id="quiz">
-      <div class="question" id="qText">Loading question...</div>
-      <div class="controls" id="controls">
-        <input id="answer" type="text" placeholder="Type your answer" autocomplete="off" />
-        <button id="enterBtn">Enter</button>
+  <main class="wrap" role="main">
+    <h1>Trench Saga Q&A</h1>
+
+    <div id="step1" class="step">
+      <div class="input-row">
+        <input id="q1" type="text" placeholder="When will you perform? (00/00)" />
+        <button id="b1">Enter</button>
       </div>
-      <div class="result" id="result" style="display:none;"></div>
-      <button id="restartBtn" style="display:none; margin-top:1rem;">Restart</button>
+      <div id="r1" class="muted"></div>
     </div>
+
+    <div id="step2" class="step" style="display:none;">
+      <div class="input-row">
+        <input id="q2" type="text" placeholder="Who is the Nova Bishop?" />
+        <button id="b2">Enter</button>
+      </div>
+      <div id="r2" class="muted"></div>
+    </div>
+
+    <div id="step3" class="step" style="display:none;">
+      <div class="input-row">
+        <input id="q3" type="text" placeholder="Bandito or Bishop?" />
+        <button id="b3">Enter</button>
+      </div>
+      <div id="r3" class="muted"></div>
+    </div>
+
+    <div id="final" style="display:none; margin-top:1.5rem;">
+      <div id="song" style="margin-bottom:1rem;"></div>
+      <button onclick="location.reload()">Restart</button>
+    </div>
+
   </main>
 
   <script>
-    const questions = [
-      { q: 'When is the rendition of the Trench saga? (format 00/00)', a: '21/12' },
-      { q: 'Who is the Nova Bishop?', a: 'clancy' },
-      { q: 'Are you a Bandito or a Bishop?', a: ['bandito','bishop'] }
-    ];
+    function norm(s){ return (s||'').trim().toLowerCase(); }
 
-    let idx = 0;
-    const qText = document.getElementById('qText');
-    const answerInput = document.getElementById('answer');
-    const enterBtn = document.getElementById('enterBtn');
-    const result = document.getElementById('result');
-    const restartBtn = document.getElementById('restartBtn');
-    const controls = document.getElementById('controls');
-
-    function showQuestion(){
-      qText.textContent = questions[idx].q;
-      answerInput.value = '';
-      answerInput.focus();
-    }
-
-    function finish(finalRole){
-      controls.style.display = 'none';
-      result.style.display = 'block';
-      restartBtn.style.display = 'inline-block';
-
-      if(finalRole === 'bandito'){
-        result.textContent = 'Song: Levitate';
-      } else if(finalRole === 'bishop'){
-        result.textContent = 'Song: City Walls';
-      }
-    }
-
-    enterBtn.addEventListener('click', ()=>{
-      let val = answerInput.value.trim().toLowerCase();
-      let correct = questions[idx].a;
-
-      if(idx === 0){
-        if(val !== correct){ return; }
-        idx++;
-        return showQuestion();
-      }
-
-      if(idx === 1){
-        if(val !== correct){ return; }
-        idx++;
-        return showQuestion();
-      }
-
-      if(idx === 2){
-        if(!correct.includes(val)){ return; }
-        if(val === 'bandito') finish('bandito');
-        else finish('bishop');
-      }
+    // Step 1
+    document.getElementById('b1').addEventListener('click',()=>{
+      const v = norm(document.getElementById('q1').value);
+      if(v !== '21/12') return;
+      document.getElementById('step1').style.display='none';
+      document.getElementById('step2').style.display='block';
+      document.getElementById('q2').focus();
     });
 
-    answerInput.addEventListener('keydown', e=>{
-      if(e.key === 'Enter') enterBtn.click();
+    // Step 2
+    document.getElementById('b2').addEventListener('click',()=>{
+      const v = norm(document.getElementById('q2').value);
+      if(v !== 'clancy') return;
+      document.getElementById('step2').style.display='none';
+      document.getElementById('step3').style.display='block';
+      document.getElementById('q3').focus();
     });
 
-    restartBtn.addEventListener('click', ()=>{
-      idx = 0;
-      result.style.display = 'none';
-      restartBtn.style.display = 'none';
-      controls.style.display = 'flex';
-      showQuestion();
-    });
+    // Step 3
+    document.getElementById('b3').addEventListener('click',()=>{
+      const v = norm(document.getElementById('q3').value);
+      if(!['bandito','bishop','obispo'].includes(v)) return;
 
-    showQuestion();
+      document.getElementById('step3').style.display='none';
+      document.getElementById('final').style.display='block';
+
+      if(v === 'bandito'){
+        document.getElementById('song').textContent = '<span style="color: yellow;">Song: Levitate</span>';
+      } else {
+        document.getElementById('song').textContent = '<span style="color: red;">Song: City Walls</span>';
+      }
+    });
   </script>
+<audio id="correctSound" src="correct.mp3"></audio>
+<audio id="finalSound" src="final.mp3"></audio>
+<script>
+  function playCorrect(){ document.getElementById('correctSound').play(); }
+  function playFinal(){ document.getElementById('finalSound').play(); }
+</script>
 </body>
 </html>
