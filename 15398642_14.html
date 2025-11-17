@@ -5,127 +5,102 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>A RENDITION OF THE TRENCH SAGA</title>
   <link rel="icon" type="image/png" href="./favicon.png">
+ <style>
+  :root{
+    --bg:#000;
+    --fg:#fff;
+  }
 
-  <style>
-    :root{
-      --bg: #000;
-      --fg: #fff;
-    }
-    html,body{height:100%;margin:0}
-    body{
-      background:var(--bg);
-      color:var(--fg);
-      font-family:"Courier New", Courier, monospace;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:"Courier New",monospace;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
 
-    .wrap{
-      text-align:center;
-      max-width:90vw;
-      width:100%;
-      padding: 20px;
-      box-sizing:border-box;
-    }
+  .wrap{
+    text-align:center;
+    width:100%;
+    max-width:900px;
+  }
 
-    /* Typewriter title (clean) */
-    h1{
-      margin:0 0 1.25rem 0;
-      font-size:clamp(2rem,6vw,4.5rem);
-      letter-spacing:0.06em;
-      font-weight:400;
-      white-space:nowrap;
-      overflow:hidden;
-      border-right: 2px solid rgba(255,255,255,0.75);
-      box-sizing:content-box;
-      width: min(92%, 68ch);
-      margin-left: auto;
-      margin-right: auto;
-      animation: typing 3s steps(30,end), blink 0.7s step-end infinite;
-    }
+  /* TITLE — FIXED WIDTH TYPEWRITER */
+  h1{
+    margin:0 0 1.5rem;
+    font-size:clamp(2rem,6vw,4rem);
+    letter-spacing:0.1em;
+    white-space:nowrap;
+    overflow:hidden;
+    width: 32ch;           /* ← ANCHO EXACTO DEL TEXTO */
+    border-right:2px solid rgba(255,255,255,0.8);
+    animation: typing 3s steps(32,end), blink .7s step-end infinite;
+  }
 
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
+  @keyframes typing{ from{width:0;} to{width:32ch;} }
+  @keyframes blink{ 50%{border-color:transparent;} }
 
-    .input-row{
-      display:flex;
-      gap:0.6rem;
-      justify-content:center;
-      align-items:center;
-      margin-top:0.6rem;
-      flex-wrap:wrap;
-    }
+  /* INPUTS */
+  input[type="text"]{
+    background:#000;
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.22);
+    padding:0.7rem 1rem;
+    border-radius:8px;
+    min-width:260px;
+    font-size:1rem;
+    transition: box-shadow .25s ease;
+  }
 
-    input[type="text"]{
-      background:transparent;
-      color:var(--fg);
-      border:1px solid rgba(255,255,255,0.18);
-      padding:0.65rem 0.9rem;
-      font:1rem/1 "Courier New", Courier, monospace;
-      outline:none;
-      border-radius:6px;
-      min-width:260px;
-      transition: box-shadow 220ms ease, transform 120ms ease;
-      box-shadow: none;
-    }
+  button{
+    background:#111;
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.22);
+    padding:0.7rem 1rem;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:1rem;
+  }
 
-    input[type="text"]::placeholder{ color: rgba(255,255,255,0.32); }
+  .input-row{
+    display:flex;
+    gap:0.6rem;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:1rem;
+  }
 
-    button{
-      background:transparent;
-      color:var(--fg);
-      border:1px solid rgba(255,255,255,0.18);
-      padding:0.6rem 0.9rem;
-      border-radius:6px;
-      cursor:pointer;
-      font:1rem/1 "Courier New", Courier, monospace;
-    }
-    button:active{ transform: translateY(1px); }
+  /* FIXED PULSE EFFECT — NOW CLEARLY VISIBLE */
+  .pulse-green{
+    box-shadow:
+      0 0 12px 4px rgba(0,255,0,0.55),
+      0 0 28px 10px rgba(0,255,0,0.25);
+  }
 
-    /* Glow (soft gradient-like effect) */
-    .pulse-green{
-      box-shadow:
-        0 0 8px 2px rgba(0,255,0,0.35),
-        0 0 20px 6px rgba(0,255,0,0.12);
-    }
-    .pulse-red{
-      box-shadow:
-        0 0 8px 2px rgba(255,0,0,0.35),
-        0 0 20px 6px rgba(255,0,0,0.12);
-    }
-    .pulse-yellow{
-      box-shadow:
-        0 0 10px 3px rgba(255, 230, 0, 0.45),
-        0 0 24px 8px rgba(255, 230, 0, 0.12);
-    }
-    .pulse-bishop{
-      box-shadow:
-        0 0 10px 3px rgba(255,80,80,0.45),
-        0 0 26px 8px rgba(255,80,80,0.12);
-    }
+  .pulse-red{
+    box-shadow:
+      0 0 12px 4px rgba(255,0,0,0.55),
+      0 0 28px 10px rgba(255,0,0,0.25);
+  }
 
-    /* Final area */
-    #final {
-      margin-top:1rem;
-    }
-    #song {
-      margin-top: .8rem;
-      font-size: 1.05rem;
-    }
+  .pulse-yellow{
+    box-shadow:
+      0 0 14px 4px rgba(255,255,0,0.60),
+      0 0 30px 12px rgba(255,255,0,0.25);
+  }
 
-    /* small responsive tweaks */
-    @media (max-width:420px){
-      h1{ font-size:2.2rem }
-      input[type="text"]{ min-width: 180px }
-      .input-row{ gap:0.4rem }
-    }
-  </style>
+  .pulse-bishop{
+    box-shadow:
+      0 0 14px 4px rgba(255,60,60,0.60),
+      0 0 30px 12px rgba(255,60,60,0.25);
+  }
+
+  #final{ margin-top:1rem; }
+</style>
+
 </head>
 <body>
   <main class="wrap" role="main" aria-live="polite">
@@ -222,14 +197,20 @@
       if(p && p.catch) p.catch(()=>{/* ignore autoplay errors */});
     }
 
-    function pulse(el, cls){
-      // remove other pulses
-      el.classList.remove('pulse-green','pulse-red','pulse-yellow','pulse-bishop');
-      void el.offsetWidth; // reflow to restart
-      el.classList.add(cls);
-      // remove after visible time
-      setTimeout(()=> el.classList.remove(cls), 600);
-    }
+   function pulse(el, cls){
+  el.classList.remove('pulse-green','pulse-red','pulse-yellow','pulse-bishop');
+
+  // Forzar reflow *real*
+  void el.offsetHeight;
+
+  el.classList.add(cls);
+
+  // Mantener visible más tiempo
+  setTimeout(()=>{
+    el.classList.remove(cls);
+  }, 600);
+}
+
 
     // Allow Enter key for each
     [ [q1,b1], [q2,b2], [q3,b3], [q4,b4], [q5,b5] ].forEach(pair=>{
