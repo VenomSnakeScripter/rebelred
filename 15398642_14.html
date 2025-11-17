@@ -19,48 +19,63 @@
     }
 
     #container {
-        width: 80%;
-        max-width: 500px;
+        width: 85%;
+        max-width: 600px;
+        padding: 30px;
+        border: 1px solid #333;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(4px);
+    }
+
+    h1 {
+        font-weight: normal;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
     }
 
     input, button {
         font-family: "Courier New", monospace;
-        padding: 10px;
+        padding: 12px;
         font-size: 18px;
         width: 100%;
         margin-top: 10px;
         background: #111;
         border: 1px solid white;
         color: white;
+        outline: none;
+        transition: 0.2s;
     }
 
-    /* PULSE ANIMATIONS */
+    button:hover {
+        background: #222;
+    }
+
     @keyframes pulse-green {
-        0% { box-shadow: 0 0 5px #00ff00; }
-        50% { box-shadow: 0 0 20px #00ff00; }
-        100% { box-shadow: 0 0 5px #00ff00; }
+        0% { box-shadow: 0 0 8px #00ff00; }
+        50% { box-shadow: 0 0 22px #00ff00; }
+        100% { box-shadow: 0 0 8px #00ff00; }
     }
-
     @keyframes pulse-red {
-        0% { box-shadow: 0 0 5px red; }
-        50% { box-shadow: 0 0 20px red; }
-        100% { box-shadow: 0 0 5px red; }
+        0% { box-shadow: 0 0 8px red; }
+        50% { box-shadow: 0 0 22px red; }
+        100% { box-shadow: 0 0 8px red; }
     }
-
     @keyframes pulse-yellow {
-        0% { box-shadow: 0 0 5px yellow; }
-        50% { box-shadow: 0 0 20px yellow; }
-        100% { box-shadow: 0 0 5px yellow; }
+        0% { box-shadow: 0 0 8px yellow; }
+        50% { box-shadow: 0 0 22px yellow; }
+        100% { box-shadow: 0 0 8px yellow; }
     }
 
-    .pulse-green { animation: pulse-green 0.6s ease; }
-    .pulse-red { animation: pulse-red 0.6s ease; }
-    .pulse-yellow { animation: pulse-yellow 0.6s ease; }
+    .pulse-green { animation: pulse-green 0.7s ease; }
+    .pulse-red { animation: pulse-red 0.7s ease; }
+    .pulse-yellow { animation: pulse-yellow 0.7s ease; }
+
 </style>
 </head>
 
 <body>
 
+<!-- Sounds -->
 <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
 <audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-big-failure-2039.wav"></audio>
 
@@ -89,12 +104,13 @@ const answers = [
 function loadQuestion() {
     document.getElementById("question").textContent = questions[step];
     document.getElementById("answer").value = "";
+    document.getElementById("feedback").textContent = "";
     document.getElementById("answer").focus();
 }
 
 function pulse(element, color) {
     element.classList.remove("pulse-green", "pulse-red", "pulse-yellow");
-    void element.offsetWidth; // reset animation
+    void element.offsetWidth;
     element.classList.add(color);
 }
 
@@ -106,22 +122,23 @@ function checkAnswer() {
     let correctSound = document.getElementById("correct-sound");
     let wrongSound = document.getElementById("wrong-sound");
 
-    // Multiple options question
+    // Multiple choice question
     if (Array.isArray(correct)) {
         if (correct.includes(val)) {
-
             if (val === "bandito") {
                 pulse(input, "pulse-yellow");
                 correctSound.play();
-                showFinal("Song: <span style='color: yellow;'>Levitate</span>");
+                setTimeout(() => {
+                    showFinal("Song: <span style='color: yellow;'>Levitate</span>");
+                }, 800);
             }
-
             else if (val === "bishop") {
                 pulse(input, "pulse-red");
                 correctSound.play();
-                showFinal("Song: <span style='color: red;'>City Walls</span>");
+                setTimeout(() => {
+                    showFinal("Song: <span style='color: red;'>City Walls</span>");
+                }, 800);
             }
-
             return;
         } else {
             pulse(input, "pulse-red");
@@ -134,14 +151,14 @@ function checkAnswer() {
     if (val === correct) {
         pulse(input, "pulse-green");
         correctSound.play();
-        step++;
 
+        step++;
         if (step >= questions.length) {
-            showFinal("Completed.");
+            setTimeout(() => showFinal("Completed."), 800);
             return;
         }
 
-        setTimeout(loadQuestion, 600);
+        setTimeout(loadQuestion, 800);
     } else {
         pulse(input, "pulse-red");
         wrongSound.play();
@@ -160,5 +177,6 @@ loadQuestion();
 
 </body>
 </html>
+
 
 
