@@ -3,9 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>A RENDITION OF THE TRENCH SAGA</title>
-  <link rel="icon" type="image/png" href="./favicon.png">
-
+  <title>Trench Saga Q&A</title>
   <style>
     :root{--bg:#000;--fg:#fff}
     html,body{height:100%;margin:0}
@@ -16,17 +14,21 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      padding:2rem;
     }
+
     .wrap{
       text-align:center;
       max-width:90vw;
     }
+
     h1{
       margin:0 0 1rem 0;
-      font-size:clamp(2rem,6vw,5rem);
+      font-size:clamp(2rem,6vw,4rem);
       letter-spacing:0.06em;
       font-weight:400;
     }
+
     .input-row{
       display:flex;
       gap:0.5rem;
@@ -34,6 +36,7 @@
       align-items:center;
       margin-top:0.6rem;
     }
+
     input[type="text"]{
       background:transparent;
       color:var(--fg);
@@ -42,10 +45,21 @@
       font:1rem/1 "Courier New", Courier, monospace;
       outline:none;
       border-radius:6px;
-      min-width:220px;
-      transition:box-shadow 0.2s ease, outline 0.2s ease;
+      min-width:260px;
+      transition:box-shadow 0.25s ease;
     }
-    input[type="text"]::placeholder{color:rgba(255,255,255,0.35)}
+
+    /* PULSOS (GLOW SUAVE, NO SÓLIDO) */
+    .pulse-green{
+      box-shadow:0 0 12px 4px rgba(0,255,0,0.65);
+    }
+    .pulse-red{
+      box-shadow:0 0 12px 4px rgba(255,0,0,0.65);
+    }
+    .pulse-yellow{
+      box-shadow:0 0 12px 4px rgba(255,255,0,0.65);
+    }
+
     button{
       background:transparent;
       color:var(--fg);
@@ -54,200 +68,186 @@
       border-radius:6px;
       cursor:pointer;
       font:1rem/1 "Courier New", Courier, monospace;
-      transition:background 0.12s ease, transform 0.06s ease;
     }
+
     button:active{transform:translateY(1px)}
-    /* Pulses using outline so they are always visible */
-    .pulse-green{ outline: 3px solid rgba(0,255,0,0.95) !important; box-shadow: none !important; transition: outline 0.18s ease; }
-    .pulse-red{ outline: 3px solid rgba(255,0,0,0.95) !important; box-shadow: none !important; transition: outline 0.18s ease; }
-    .pulse-yellow{ outline: 3px solid rgba(255,255,0,0.95) !important; box-shadow: none !important; transition: outline 0.18s ease; }
-    .pulse-bishop{ outline: 3px solid rgba(255,60,60,0.95) !important; box-shadow: none !important; transition: outline 0.18s ease; }
 
-    #song{ margin-top:1rem; font-size:1.05rem; }
+    #final{
+      margin-top:1rem;
+      font-size:1.3rem;
+    }
+    h1{
+    position:relative;
+    display:inline-block;
+  }
+  
+  h1::before,
+  h1::after{
+    content: attr(data-text);
+    position:absolute;
+    top:0; left:0;
+    opacity:0;
+  }
+  
+  h1::before{
+    color:#f00;
+    z-index:-1;
+    animation: glitch1 2.5s infinite;
+  }
+  
+  h1::after{
+    color:#0ff;
+    z-index:-1;
+    animation: glitch2 2.5s infinite;
+  }
+  
+  @keyframes glitch1{
+    0%{clip-path:inset(50% 0 0 0); transform:translate(-3px,-3px); opacity:0.8;}
+    20%{clip-path:inset(10% 0 65% 0); transform:translate(3px,3px); opacity:0.4;}
+    40%{clip-path:inset(80% 0 0 0); transform:translate(-2px,2px); opacity:0.7;}
+    60%{clip-path:inset(20% 0 40% 0); transform:translate(2px,-2px); opacity:0.6;}
+    100%{clip-path:inset(50% 0 0 0); transform:translate(0,0); opacity:0;}
+  }
+  
+  @keyframes glitch2{
+    0%{clip-path:inset(0 0 40% 0); transform:translate(2px,2px); opacity:0.5;}
+    20%{clip-path:inset(60% 0 15% 0); transform:translate(-2px,-2px); opacity:0.3;}
+    40%{clip-path:inset(30% 0 20% 0); transform:translate(3px,-3px); opacity:0.7;}
+    60%{clip-path:inset(80% 0 0 0); transform:translate(-3px,3px); opacity:0.5;}
+    100%{clip-path:inset(0 0 40% 0); transform:translate(0,0); opacity:0;}
+  }
 
-    /* small helper to fade the final text in */
-    .fade-in { animation: fadeIn 360ms ease both; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
-
   <main class="wrap" role="main">
-    <h1>A RENDITION OF THE TRENCH SAGA</h1>
+    <h1 data-text="Trench Saga Q&A">Trench Saga</h1>
 
     <!-- STEP 1 -->
-    <div id="step1">
+    <div id="s1" class="step">
       <div class="input-row">
-        <input id="q1" type="text" placeholder="When will you perform? (00/00)" aria-label="Question 1">
-        <button id="b1" aria-label="Enter 1">Enter</button>
+        <input id="q1" type="text" placeholder="When will you perform? (00/00)">
+        <button id="b1">Enter</button>
       </div>
     </div>
 
     <!-- STEP 2 -->
-    <div id="step2" style="display:none;">
+    <div id="s2" class="step" style="display:none;">
       <div class="input-row">
-        <input id="q2" type="text" placeholder="Who is the Nova Bishop?" aria-label="Question 2">
-        <button id="b2" aria-label="Enter 2">Enter</button>
+        <input id="q2" type="text" placeholder="Who is the Nova Bishop?">
+        <button id="b2">Enter</button>
       </div>
     </div>
 
     <!-- STEP 3 -->
-    <div id="step3" style="display:none;">
+    <div id="s3" class="step" style="display:none;">
       <div class="input-row">
-        <input id="q3" type="text" placeholder="Bandito or Bishop?" aria-label="Question 3">
-        <button id="b3" aria-label="Enter 3">Enter</button>
+        <input id="q3" type="text" placeholder="rebel red...">
+        <button id="b3">Enter</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="s4" class="step" style="display:none;">
+      <div class="input-row">
+        <input id="q4" type="text" placeholder="Keons, Sacarver, Listo...">
+        <button id="b4">Enter</button>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div id="s5" class="step" style="display:none;">
+      <div class="input-row">
+        <input id="q5" type="text" placeholder="Bandito or Bishop?">
+        <button id="b5">Enter</button>
       </div>
     </div>
 
     <!-- FINAL -->
     <div id="final" style="display:none;">
-      <div id="song" class="fade-in"></div>
-      <button id="restartBtn" style="margin-top:12px;">Restart</button>
+      <div id="song"></div>
+      <br>
+      <button onclick="location.reload()">Restart</button>
     </div>
+
   </main>
 
-  <!-- Sounds (external URLs used so it works immediately) -->
-  <!-- correct sound -->
-  <audio id="correctSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
-  <!-- final/celebrate sound -->
-  <audio id="finalSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-sparkle-tone-482.mp3"></audio>
-  <!-- wrong sound -->
-  <audio id="wrongSound" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-big-failure-2039.wav"></audio>
+<script>
+function norm(s){ return (s || "").trim().toLowerCase(); }
 
-  <script>
-    // helper normalize
-    function norm(s){ return (s||'').trim().toLowerCase(); }
+// PULSO SUAVE AL INPUT
+function pulse(el, cls){
+  el.classList.remove("pulse-green","pulse-red","pulse-yellow");
+  void el.offsetWidth; // reset animation
+  el.classList.add(cls);
+  setTimeout(()=> el.classList.remove(cls), 450);
+}
 
-    // DOM refs
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    const final = document.getElementById('final');
+/* STEP 1 */
+document.getElementById("b1").onclick = ()=>{
+  let el = document.getElementById("q1");
+  let v = norm(el.value);
+  if(v !== "21/12"){ pulse(el,"pulse-red"); return; }
+  pulse(el,"pulse-green");
+  s1.style.display="none"; s2.style.display="block"; q2.focus();
+};
 
-    const q1 = document.getElementById('q1');
-    const q2 = document.getElementById('q2');
-    const q3 = document.getElementById('q3');
+/* STEP 2 */
+document.getElementById("b2").onclick = ()=>{
+  let el = document.getElementById("q2");
+  let v = norm(el.value);
+  if(v !== "clancy"){ pulse(el,"pulse-red"); return; }
+  pulse(el,"pulse-green");
+  s2.style.display="none"; s3.style.display="block"; q3.focus();
+};
 
-    const b1 = document.getElementById('b1');
-    const b2 = document.getElementById('b2');
-    const b3 = document.getElementById('b3');
-    const restartBtn = document.getElementById('restartBtn');
+/* STEP 3 */
+document.getElementById("b3").onclick = ()=>{
+  let el = document.getElementById("q3");
+  let v = norm(el.value);
+  if(v !== "carnation"){ pulse(el,"pulse-red"); return; }
+  pulse(el,"pulse-green");
+  s3.style.display="none"; s4.style.display="block"; q4.focus();
+};
 
-    const songEl = document.getElementById('song');
+/* STEP 4 */
+document.getElementById("b4").onclick = ()=>{
+  let el = document.getElementById("q4");
+  let v = norm(el.value);
+  if(v !== "clancy"){ pulse(el,"pulse-red"); return; }
+  pulse(el,"pulse-green");
+  s4.style.display="none"; s5.style.display="block"; q5.focus();
+};
 
-    // sounds
-    const correctSound = document.getElementById('correctSound');
-    const finalSound = document.getElementById('finalSound');
-    const wrongSound = document.getElementById('wrongSound');
+/* STEP 5 (FINAL) */
+document.getElementById("b5").onclick = ()=>{
+  let el = document.getElementById("q5");
+  let v = norm(el.value);
 
-    // pulse utility - applies outline class, resets before reapplying
-    function pulse(el, cls){
-      el.classList.remove('pulse-green','pulse-red','pulse-yellow','pulse-bishop');
-      void el.offsetWidth; // reflow to restart animation/class
-      el.classList.add(cls);
-      // remove the outline after a short time so it doesn't stay permanently
-      setTimeout(()=> {
-        el.classList.remove(cls);
-      }, 900);
-    }
+  if(!["bandito","bishop","obispo"].includes(v)){
+    pulse(el,"pulse-red");
+    return;
+  }
 
-    function playIfAllowed(audio){
-      // attempt to play, but ignore promise errors (autoplay policy)
-      if(!audio) return;
-      audio.currentTime = 0;
-      const p = audio.play();
-      if(p && typeof p.catch === 'function') p.catch(()=>{/* ignore */});
-    }
+  // Animación de color según selección
+  if(v === "bandito"){
+    pulse(el,"pulse-yellow");
+    showFinal("Song: Levitate","yellow");
+  } else {
+    pulse(el,"pulse-red");
+    showFinal("Song: City Walls","red");
+  }
+};
 
-    // Step 1 logic
-    b1.addEventListener('click', ()=>{
-      const v = norm(q1.value);
-      if (v === '21/12') {
-        pulse(q1, 'pulse-green');
-        playIfAllowed(correctSound);
-        // wait so user sees pulse
-        setTimeout(()=>{
-          step1.style.display = 'none';
-          step2.style.display = 'block';
-          q2.focus();
-        }, 300);
-      } else {
-        pulse(q1, 'pulse-red');
-        playIfAllowed(wrongSound);
-      }
-    });
-
-    // allow Enter on q1
-    q1.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){ e.preventDefault(); b1.click(); }
-    });
-
-    // Step 2 logic
-    b2.addEventListener('click', ()=>{
-      const v = norm(q2.value);
-      if (v === 'clancy') {
-        pulse(q2, 'pulse-green');
-        playIfAllowed(correctSound);
-        setTimeout(()=>{
-          step2.style.display = 'none';
-          step3.style.display = 'block';
-          q3.focus();
-        }, 300);
-      } else {
-        pulse(q2, 'pulse-red');
-        playIfAllowed(wrongSound);
-      }
-    });
-
-    q2.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){ e.preventDefault(); b2.click(); }
-    });
-
-    // Step 3 logic (multiple options)
-    b3.addEventListener('click', ()=>{
-      const v = norm(q3.value);
-      if (!['bandito','bishop','obispo'].includes(v)) {
-        pulse(q3, 'pulse-red');
-        playIfAllowed(wrongSound);
-        return;
-      }
-
-      // For visibility, apply pulse first, then show final after delay
-      if (v === 'bandito') {
-        pulse(q3, 'pulse-yellow');
-        playIfAllowed(correctSound);
-        setTimeout(()=> {
-          step3.style.display = 'none';
-          final.style.display = 'block';
-          songEl.innerHTML = "<span style='color:yellow'>Song: Levitate</span>";
-          songEl.classList.add('fade-in');
-          playIfAllowed(finalSound);
-        }, 420);
-      } else { // bishop / obispo
-        pulse(q3, 'pulse-bishop');
-        playIfAllowed(correctSound);
-        setTimeout(()=> {
-          step3.style.display = 'none';
-          final.style.display = 'block';
-          songEl.innerHTML = "<span style='color:red'>Song: City Walls</span>";
-          songEl.classList.add('fade-in');
-          playIfAllowed(finalSound);
-        }, 420);
-      }
-    });
-
-    q3.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){ e.preventDefault(); b3.click(); }
-    });
-
-    // Restart
-    restartBtn.addEventListener('click', ()=> location.reload());
-
-    // autofocus first input
-    q1.focus();
-  </script>
+function showFinal(text,color){
+  s5.style.display="none";
+  final.style.display="block";
+  song.innerHTML = `<span style="color:${color};">${text}</span>`;
+}
+</script>
 </body>
 </html>
+
 
 
 
