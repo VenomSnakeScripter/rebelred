@@ -3,250 +3,324 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Trench Saga Q&A</title>
+  <title>A RENDITION OF THE TRENCH SAGA</title>
+  <link rel="icon" type="image/png" href="./favicon.png">
+
   <style>
-    :root{--bg:#000;--fg:#fff}
+    :root{
+      --bg: #000;
+      --fg: #fff;
+    }
     html,body{height:100%;margin:0}
     body{
       background:var(--bg);
       color:var(--fg);
-      font-family: "Courier New", Courier, monospace;
+      font-family:"Courier New", Courier, monospace;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:2rem;
     }
 
     .wrap{
       text-align:center;
       max-width:90vw;
+      width:100%;
+      padding: 20px;
+      box-sizing:border-box;
     }
 
+    /* Typewriter title (clean) */
     h1{
-      margin:0 0 1rem 0;
-      font-size:clamp(2rem,6vw,4rem);
+      margin:0 0 1.25rem 0;
+      font-size:clamp(2rem,6vw,4.5rem);
       letter-spacing:0.06em;
       font-weight:400;
+      white-space:nowrap;
+      overflow:hidden;
+      border-right: 2px solid rgba(255,255,255,0.75);
+      box-sizing:content-box;
+      width: min(92%, 68ch);
+      margin-left: auto;
+      margin-right: auto;
+      animation: typing 3s steps(30,end), blink 0.7s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
     }
 
     .input-row{
       display:flex;
-      gap:0.5rem;
+      gap:0.6rem;
       justify-content:center;
       align-items:center;
       margin-top:0.6rem;
+      flex-wrap:wrap;
     }
 
     input[type="text"]{
       background:transparent;
       color:var(--fg);
-      border:1px solid rgba(255,255,255,0.25);
-      padding:0.6rem 0.8rem;
+      border:1px solid rgba(255,255,255,0.18);
+      padding:0.65rem 0.9rem;
       font:1rem/1 "Courier New", Courier, monospace;
       outline:none;
       border-radius:6px;
       min-width:260px;
-      transition:box-shadow 0.25s ease;
+      transition: box-shadow 220ms ease, transform 120ms ease;
+      box-shadow: none;
     }
 
-    /* PULSOS (GLOW SUAVE, NO SÓLIDO) */
-    .pulse-green{
-      box-shadow:0 0 12px 4px rgba(0,255,0,0.65);
-    }
-    .pulse-red{
-      box-shadow:0 0 12px 4px rgba(255,0,0,0.65);
-    }
-    .pulse-yellow{
-      box-shadow:0 0 12px 4px rgba(255,255,0,0.65);
-    }
+    input[type="text"]::placeholder{ color: rgba(255,255,255,0.32); }
 
     button{
       background:transparent;
       color:var(--fg);
-      border:1px solid rgba(255,255,255,0.25);
-      padding:0.55rem 0.8rem;
+      border:1px solid rgba(255,255,255,0.18);
+      padding:0.6rem 0.9rem;
       border-radius:6px;
       cursor:pointer;
       font:1rem/1 "Courier New", Courier, monospace;
     }
+    button:active{ transform: translateY(1px); }
 
-    button:active{transform:translateY(1px)}
-
-    #final{
-      margin-top:1rem;
-      font-size:1.3rem;
+    /* Glow (soft gradient-like effect) */
+    .pulse-green{
+      box-shadow:
+        0 0 8px 2px rgba(0,255,0,0.35),
+        0 0 20px 6px rgba(0,255,0,0.12);
     }
-    h1{
-    position:relative;
-    display:inline-block;
-  }
-  
-  h1::before,
-  h1::after{
-    content: attr(data-text);
-    position:absolute;
-    top:0; left:0;
-    opacity:0;
-  }
-  
-  h1::before{
-    color:#f00;
-    z-index:-1;
-    animation: glitch1 2.5s infinite;
-  }
-  
-  h1::after{
-    color:#0ff;
-    z-index:-1;
-    animation: glitch2 2.5s infinite;
-  }
-  
-  @keyframes glitch1{
-    0%{clip-path:inset(50% 0 0 0); transform:translate(-3px,-3px); opacity:0.8;}
-    20%{clip-path:inset(10% 0 65% 0); transform:translate(3px,3px); opacity:0.4;}
-    40%{clip-path:inset(80% 0 0 0); transform:translate(-2px,2px); opacity:0.7;}
-    60%{clip-path:inset(20% 0 40% 0); transform:translate(2px,-2px); opacity:0.6;}
-    100%{clip-path:inset(50% 0 0 0); transform:translate(0,0); opacity:0;}
-  }
-  
-  @keyframes glitch2{
-    0%{clip-path:inset(0 0 40% 0); transform:translate(2px,2px); opacity:0.5;}
-    20%{clip-path:inset(60% 0 15% 0); transform:translate(-2px,-2px); opacity:0.3;}
-    40%{clip-path:inset(30% 0 20% 0); transform:translate(3px,-3px); opacity:0.7;}
-    60%{clip-path:inset(80% 0 0 0); transform:translate(-3px,3px); opacity:0.5;}
-    100%{clip-path:inset(0 0 40% 0); transform:translate(0,0); opacity:0;}
-  }
+    .pulse-red{
+      box-shadow:
+        0 0 8px 2px rgba(255,0,0,0.35),
+        0 0 20px 6px rgba(255,0,0,0.12);
+    }
+    .pulse-yellow{
+      box-shadow:
+        0 0 10px 3px rgba(255, 230, 0, 0.45),
+        0 0 24px 8px rgba(255, 230, 0, 0.12);
+    }
+    .pulse-bishop{
+      box-shadow:
+        0 0 10px 3px rgba(255,80,80,0.45),
+        0 0 26px 8px rgba(255,80,80,0.12);
+    }
 
+    /* Final area */
+    #final {
+      margin-top:1rem;
+    }
+    #song {
+      margin-top: .8rem;
+      font-size: 1.05rem;
+    }
+
+    /* small responsive tweaks */
+    @media (max-width:420px){
+      h1{ font-size:2.2rem }
+      input[type="text"]{ min-width: 180px }
+      .input-row{ gap:0.4rem }
+    }
   </style>
 </head>
 <body>
-  <main class="wrap" role="main">
-    <h1 data-text="Trench Saga Q&A">Trench Saga</h1>
+  <main class="wrap" role="main" aria-live="polite">
+    <h1>A RENDITION OF THE TRENCH SAGA</h1>
 
-    <!-- STEP 1 -->
-    <div id="s1" class="step">
+    <!-- Step 1 -->
+    <div id="step1" class="step">
       <div class="input-row">
-        <input id="q1" type="text" placeholder="When will you perform? (00/00)">
-        <button id="b1">Enter</button>
+        <input id="q1" type="text" placeholder="rebel red..." aria-label="Question 1">
+        <button id="b1" aria-label="Enter 1">Enter</button>
       </div>
     </div>
 
-    <!-- STEP 2 -->
-    <div id="s2" class="step" style="display:none;">
+    <!-- Step 2 -->
+    <div id="step2" class="step" style="display:none;">
       <div class="input-row">
-        <input id="q2" type="text" placeholder="Who is the Nova Bishop?">
-        <button id="b2">Enter</button>
+        <input id="q2" type="text" placeholder="Keons, Sacarver, Listo, Lisden, Reisdro, Vetomo, Andre, Nills..." aria-label="Question 2">
+        <button id="b2" aria-label="Enter 2">Enter</button>
       </div>
     </div>
 
-    <!-- STEP 3 -->
-    <div id="s3" class="step" style="display:none;">
+    <!-- Step 3 -->
+    <div id="step3" class="step" style="display:none;">
       <div class="input-row">
-        <input id="q3" type="text" placeholder="rebel red...">
-        <button id="b3">Enter</button>
+        <input id="q3" type="text" placeholder="yellow inferno" aria-label="Question 3">
+        <button id="b3" aria-label="Enter 3">Enter</button>
       </div>
     </div>
 
-    <!-- STEP 4 -->
-    <div id="s4" class="step" style="display:none;">
+    <!-- Step 4 -->
+    <div id="step4" class="step" style="display:none;">
       <div class="input-row">
-        <input id="q4" type="text" placeholder="Keons, Sacarver, Listo...">
-        <button id="b4">Enter</button>
+        <input id="q4" type="text" placeholder="dema's symbol" aria-label="Question 4">
+        <button id="b4" aria-label="Enter 4">Enter</button>
       </div>
     </div>
 
-    <!-- STEP 5 -->
-    <div id="s5" class="step" style="display:none;">
+    <!-- Step 5 -->
+    <div id="step5" class="step" style="display:none;">
       <div class="input-row">
-        <input id="q5" type="text" placeholder="Bandito or Bishop?">
-        <button id="b5">Enter</button>
+        <input id="q5" type="text" placeholder="nova's figure" aria-label="Question 5">
+        <button id="b5" aria-label="Enter 5">Enter</button>
       </div>
     </div>
 
-    <!-- FINAL -->
+    <!-- Final -->
     <div id="final" style="display:none;">
-      <div id="song"></div>
-      <br>
-      <button onclick="location.reload()">Restart</button>
+      <div id="song" aria-live="polite"></div>
+      <div style="margin-top:12px;">
+        <button id="restart">Restart</button>
+      </div>
     </div>
-
   </main>
 
-<script>
-function norm(s){ return (s || "").trim().toLowerCase(); }
+  <!-- Sounds (external URLs so it works immediately) -->
+  <audio id="sound-correct" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
+  <audio id="sound-final" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-sparkle-tone-482.mp3"></audio>
+  <audio id="sound-wrong" preload="auto" src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-big-failure-2039.wav"></audio>
 
-// PULSO SUAVE AL INPUT
-function pulse(el, cls){
-  el.classList.remove("pulse-green","pulse-red","pulse-yellow");
-  void el.offsetWidth; // reset animation
-  el.classList.add(cls);
-  setTimeout(()=> el.classList.remove(cls), 450);
-}
+  <script>
+    // Helpers
+    const norm = s => (s || '').trim().toLowerCase();
 
-/* STEP 1 */
-document.getElementById("b1").onclick = ()=>{
-  let el = document.getElementById("q1");
-  let v = norm(el.value);
-  if(v !== "21/12"){ pulse(el,"pulse-red"); return; }
-  pulse(el,"pulse-green");
-  s1.style.display="none"; s2.style.display="block"; q2.focus();
-};
+    const q1 = document.getElementById('q1');
+    const q2 = document.getElementById('q2');
+    const q3 = document.getElementById('q3');
+    const q4 = document.getElementById('q4');
+    const q5 = document.getElementById('q5');
 
-/* STEP 2 */
-document.getElementById("b2").onclick = ()=>{
-  let el = document.getElementById("q2");
-  let v = norm(el.value);
-  if(v !== "clancy"){ pulse(el,"pulse-red"); return; }
-  pulse(el,"pulse-green");
-  s2.style.display="none"; s3.style.display="block"; q3.focus();
-};
+    const b1 = document.getElementById('b1');
+    const b2 = document.getElementById('b2');
+    const b3 = document.getElementById('b3');
+    const b4 = document.getElementById('b4');
+    const b5 = document.getElementById('b5');
 
-/* STEP 3 */
-document.getElementById("b3").onclick = ()=>{
-  let el = document.getElementById("q3");
-  let v = norm(el.value);
-  if(v !== "carnation"){ pulse(el,"pulse-red"); return; }
-  pulse(el,"pulse-green");
-  s3.style.display="none"; s4.style.display="block"; q4.focus();
-};
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
+    const step5 = document.getElementById('step5');
 
-/* STEP 4 */
-document.getElementById("b4").onclick = ()=>{
-  let el = document.getElementById("q4");
-  let v = norm(el.value);
-  if(v !== "clancy"){ pulse(el,"pulse-red"); return; }
-  pulse(el,"pulse-green");
-  s4.style.display="none"; s5.style.display="block"; q5.focus();
-};
+    const final = document.getElementById('final');
+    const song = document.getElementById('song');
+    const restart = document.getElementById('restart');
 
-/* STEP 5 (FINAL) */
-document.getElementById("b5").onclick = ()=>{
-  let el = document.getElementById("q5");
-  let v = norm(el.value);
+    const soundCorrect = document.getElementById('sound-correct');
+    const soundFinal = document.getElementById('sound-final');
+    const soundWrong = document.getElementById('sound-wrong');
 
-  if(!["bandito","bishop","obispo"].includes(v)){
-    pulse(el,"pulse-red");
-    return;
-  }
+    function playIfAllowed(s){
+      if(!s) return;
+      s.currentTime = 0;
+      const p = s.play();
+      if(p && p.catch) p.catch(()=>{/* ignore autoplay errors */});
+    }
 
-  // Animación de color según selección
-  if(v === "bandito"){
-    pulse(el,"pulse-yellow");
-    showFinal("Song: Levitate","yellow");
-  } else {
-    pulse(el,"pulse-red");
-    showFinal("Song: City Walls","red");
-  }
-};
+    function pulse(el, cls){
+      // remove other pulses
+      el.classList.remove('pulse-green','pulse-red','pulse-yellow','pulse-bishop');
+      void el.offsetWidth; // reflow to restart
+      el.classList.add(cls);
+      // remove after visible time
+      setTimeout(()=> el.classList.remove(cls), 600);
+    }
 
-function showFinal(text,color){
-  s5.style.display="none";
-  final.style.display="block";
-  song.innerHTML = `<span style="color:${color};">${text}</span>`;
-}
-</script>
+    // Allow Enter key for each
+    [ [q1,b1], [q2,b2], [q3,b3], [q4,b4], [q5,b5] ].forEach(pair=>{
+      const [input, btn] = pair;
+      input.addEventListener('keydown', e=>{
+        if(e.key === 'Enter'){ e.preventDefault(); btn.click(); }
+      });
+    });
+
+    // Step 1: rebel red... -> carnation
+    b1.addEventListener('click', ()=>{
+      const v = norm(q1.value);
+      if(v === 'carnation'){
+        pulse(q1,'pulse-green'); playIfAllowed(soundCorrect);
+        setTimeout(()=> { step1.style.display='none'; step2.style.display='block'; q2.focus(); }, 350);
+      } else {
+        pulse(q1,'pulse-red'); playIfAllowed(soundWrong);
+      }
+    });
+
+    // Step 2: Keons... -> clancy
+    b2.addEventListener('click', ()=>{
+      const v = norm(q2.value);
+      if(v === 'clancy'){
+        pulse(q2,'pulse-green'); playIfAllowed(soundCorrect);
+        setTimeout(()=> { step2.style.display='none'; step3.style.display='block'; q3.focus(); }, 350);
+      } else {
+        pulse(q2,'pulse-red'); playIfAllowed(soundWrong);
+      }
+    });
+
+    // Step 3: yellow inferno -> trench
+    b3.addEventListener('click', ()=>{
+      const v = norm(q3.value);
+      if(v === 'trench'){
+        pulse(q3,'pulse-green'); playIfAllowed(soundCorrect);
+        setTimeout(()=> { step3.style.display='none'; step4.style.display='block'; q4.focus(); }, 350);
+      } else {
+        pulse(q3,'pulse-red'); playIfAllowed(soundWrong);
+      }
+    });
+
+    // Step 4: dema's symbol -> bandito
+    b4.addEventListener('click', ()=>{
+      const v = norm(q4.value);
+      if(v === 'bandito'){
+        pulse(q4,'pulse-green'); playIfAllowed(soundCorrect);
+        setTimeout(()=> { step4.style.display='none'; step5.style.display='block'; q5.focus(); }, 350);
+      } else {
+        pulse(q4,'pulse-red'); playIfAllowed(soundWrong);
+      }
+    });
+
+    // Step 5: nova's figure -> bishop (or accept 'bandito' for alternate flow?)
+    b5.addEventListener('click', ()=>{
+      const v = norm(q5.value);
+      // accept 'bandito' or 'bishop' as choices, but here required answer is 'bishop'
+      // We'll accept both to produce final song mapping per user's previous logic:
+      if(!['bandito','bishop','obispo'].includes(v)){
+        pulse(q5,'pulse-red'); playIfAllowed(soundWrong);
+        return;
+      }
+
+      // show pulse color specific
+      if(v === 'bandito'){
+        pulse(q5,'pulse-yellow'); playIfAllowed(soundCorrect);
+        setTimeout(()=> {
+          step5.style.display='none';
+          final.style.display='block';
+          song.innerHTML = "<span style='color:yellow'>Song: Levitate</span>";
+          playIfAllowed(soundFinal);
+        }, 420);
+      } else { // bishop / obispo
+        pulse(q5,'pulse-bishop'); playIfAllowed(soundCorrect);
+        setTimeout(()=> {
+          step5.style.display='none';
+          final.style.display='block';
+          song.innerHTML = "<span style='color:red'>Song: City Walls</span>";
+          playIfAllowed(soundFinal);
+        }, 420);
+      }
+    });
+
+    restart.addEventListener('click', ()=> location.reload());
+
+    // autofocus first
+    q1.focus();
+  </script>
 </body>
 </html>
+
 
 
 
