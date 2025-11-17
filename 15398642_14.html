@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trench Saga</title>
+  <style>
+    :root{ --bg:#000; --text:#fff; --muted:rgba(255,255,255,0.6); }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+    }
+    .card{
+      width:100%; max-width:680px; text-align:center;
+    }
+    h1{ margin:0 0 1rem 0; font-size: clamp(20px, 4vw, 32px); }
+    .question{ font-size: clamp(16px, 3vw, 20px); margin-bottom:1rem; color:var(--muted); }
+    .controls{ display:flex; gap:0.5rem; justify-content:center; }
+    input[type="text"]{
+      padding:0.6rem 0.75rem; font-size:16px; width:60%; max-width:420px;
+      background:transparent; border:1px solid rgba(255,255,255,0.15);
+      color:var(--text);
+    }
+    button{
+      padding:0.6rem 0.9rem; font-size:16px; background:transparent;
+      border:1px solid rgba(255,255,255,0.18); color:var(--text); cursor:pointer;
+    }
+    button:disabled{ opacity:0.4; cursor:not-allowed; }
+    .result{ margin-top:1.5rem; font-size:18px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Trench Saga </h1>
+    <div id="quiz">
+      <div class="question" id="qText">Loading question...</div>
+      <div class="controls" id="controls">
+        <input id="answer" type="text" placeholder="Type your answer" autocomplete="off" />
+        <button id="enterBtn">Enter</button>
+      </div>
+      <div class="result" id="result" style="display:none;"></div>
+      <button id="restartBtn" style="display:none; margin-top:1rem;">Restart</button>
+    </div>
+  </main>
+
+  <script>
+    const questions = [
+      { q: 'When is the rendition of the Trench saga? (format 00/00)', a: '21/12' },
+      { q: 'Who is the Nova Bishop?', a: 'clancy' },
+      { q: 'Are you a Bandito or a Bishop?', a: ['bandito','bishop'] }
+    ];
+
+    let idx = 0;
+    const qText = document.getElementById('qText');
+    const answerInput = document.getElementById('answer');
+    const enterBtn = document.getElementById('enterBtn');
+    const result = document.getElementById('result');
+    const restartBtn = document.getElementById('restartBtn');
+    const controls = document.getElementById('controls');
+
+    function showQuestion(){
+      qText.textContent = questions[idx].q;
+      answerInput.value = '';
+      answerInput.focus();
+    }
+
+    function finish(finalRole){
+      controls.style.display = 'none';
+      result.style.display = 'block';
+      restartBtn.style.display = 'inline-block';
+
+      if(finalRole === 'bandito'){
+        result.textContent = 'Song: Levitate';
+      } else if(finalRole === 'bishop'){
+        result.textContent = 'Song: City Walls';
+      }
+    }
+
+    enterBtn.addEventListener('click', ()=>{
+      let val = answerInput.value.trim().toLowerCase();
+      let correct = questions[idx].a;
+
+      if(idx === 0){
+        if(val !== correct){ return; }
+        idx++;
+        return showQuestion();
+      }
+
+      if(idx === 1){
+        if(val !== correct){ return; }
+        idx++;
+        return showQuestion();
+      }
+
+      if(idx === 2){
+        if(!correct.includes(val)){ return; }
+        if(val === 'bandito') finish('bandito');
+        else finish('bishop');
+      }
+    });
+
+    answerInput.addEventListener('keydown', e=>{
+      if(e.key === 'Enter') enterBtn.click();
+    });
+
+    restartBtn.addEventListener('click', ()=>{
+      idx = 0;
+      result.style.display = 'none';
+      restartBtn.style.display = 'none';
+      controls.style.display = 'flex';
+      showQuestion();
+    });
+
+    showQuestion();
+  </script>
+</body>
+</html>
