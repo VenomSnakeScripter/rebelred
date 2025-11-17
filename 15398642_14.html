@@ -1,182 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Trench Questions</title>
-<link rel="icon" type="image/png" href="./favicon.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A RENDITION OF THE TRENCH SAGA</title>
 
-<style>
-    body {
-        background-color: black;
-        color: white;
-        font-family: "Courier New", monospace;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        text-align: center;
+  <style>
+    :root{
+      --bg:#000;
+      --fg:#fff;
+      --pulse-green:0 0 12px 3px rgba(0,255,0,0.8);
+      --pulse-red:0 0 12px 3px rgba(255,0,0,0.8);
+      --pulse-yellow:0 0 12px 3px rgba(255,255,0,0.9);
+      --pulse-bishop:0 0 12px 3px rgba(255,50,50,0.9);
     }
 
-    #container {
-        width: 85%;
-        max-width: 600px;
-        padding: 30px;
-        border: 1px solid #333;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(4px);
+    html,body{
+      height:100%;
+      margin:0;
     }
 
-    h1 {
-        font-weight: normal;
-        letter-spacing: 2px;
-        margin-bottom: 20px;
+    body{
+      background:var(--bg);
+      color:var(--fg);
+      font-family:"Courier New", Courier, monospace;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    input, button {
-        font-family: "Courier New", monospace;
-        padding: 12px;
-        font-size: 18px;
-        width: 100%;
-        margin-top: 10px;
-        background: #111;
-        border: 1px solid white;
-        color: white;
-        outline: none;
-        transition: 0.2s;
+    .wrap{
+      text-align:center;
+      max-width:90vw;
     }
 
-    button:hover {
-        background: #222;
+    h1{
+      margin:0 0 1rem 0;
+      font-size:clamp(2rem,6vw,5rem);
+      letter-spacing:0.06em;
+      font-weight:400;
     }
 
-    @keyframes pulse-green {
-        0% { box-shadow: 0 0 8px #00ff00; }
-        50% { box-shadow: 0 0 22px #00ff00; }
-        100% { box-shadow: 0 0 8px #00ff00; }
-    }
-    @keyframes pulse-red {
-        0% { box-shadow: 0 0 8px red; }
-        50% { box-shadow: 0 0 22px red; }
-        100% { box-shadow: 0 0 8px red; }
-    }
-    @keyframes pulse-yellow {
-        0% { box-shadow: 0 0 8px yellow; }
-        50% { box-shadow: 0 0 22px yellow; }
-        100% { box-shadow: 0 0 8px yellow; }
+    .input-row{
+      display:flex;
+      gap:0.5rem;
+      justify-content:center;
+      align-items:center;
+      margin-top:0.6rem;
     }
 
-    .pulse-green { animation: pulse-green 0.7s ease; }
-    .pulse-red { animation: pulse-red 0.7s ease; }
-    .pulse-yellow { animation: pulse-yellow 0.7s ease; }
+    input[type="text"]{
+      background:transparent;
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.25);
+      padding:0.6rem 0.8rem;
+      font:1rem/1 "Courier New", Courier, monospace;
+      outline:none;
+      border-radius:6px;
+      min-width:220px;
+      transition:box-shadow 0.25s ease;
+    }
 
-</style>
+    input[type="text"]::placeholder{
+      color:rgba(255,255,255,0.35);
+    }
+
+    button{
+      background:transparent;
+      color:var(--fg);
+      border:1px solid rgba(255,255,255,0.25);
+      padding:0.55rem 0.8rem;
+      border-radius:6px;
+      cursor:pointer;
+      font:1rem/1 "Courier New", Courier, monospace;
+      transition:box-shadow 0.25s ease;
+    }
+
+    button:active{
+      transform:translateY(1px);
+    }
+
+    .pulse-green{ box-shadow:var(--pulse-green)!important; }
+    .pulse-red{ box-shadow:var(--pulse-red)!important; }
+    .pulse-yellow{ box-shadow:var(--pulse-yellow)!important; }
+    .pulse-bishop{ box-shadow:var(--pulse-bishop)!important; }
+
+    #song{
+      margin-top:1rem;
+      font-size:1.2rem;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- Sounds -->
-<audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
-<audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-big-failure-2039.wav"></audio>
+<main class="wrap" role="main">
+  <h1>A RENDITION OF THE TRENCH SAGA</h1>
 
-<div id="container">
-    <h1 id="question"></h1>
-    <input id="answer" type="text">
-    <button onclick="checkAnswer()">ENTER</button>
-    <p id="feedback"></p>
-</div>
+  <!-- STEP 1 -->
+  <div id="step1">
+    <div class="input-row">
+      <input id="q1" type="text" placeholder="When will you perform? (00/00)">
+      <button id="b1">Enter</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" style="display:none;">
+    <div class="input-row">
+      <input id="q2" type="text" placeholder="Who is the Nova Bishop?">
+      <button id="b2">Enter</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="step3" style="display:none;">
+    <div class="input-row">
+      <input id="q3" type="text" placeholder="Bandito or Bishop?">
+      <button id="b3">Enter</button>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div id="final" style="display:none;">
+    <div id="song"></div>
+    <button onclick="location.reload()">Restart</button>
+  </div>
+
+</main>
+
+<!-- SOUNDS -->
+<audio id="correctSound" src="correct.mp3"></audio>
+<audio id="finalSound" src="final.mp3"></audio>
 
 <script>
-let step = 0;
+function norm(s){ return (s||'').trim().toLowerCase(); }
 
-const questions = [
-    "When will you perform in the Trench Saga? (format 00/00)",
-    "Who is the Nova Bishop?",
-    "Are you a Bandito or a Bishop?"
-];
-
-const answers = [
-    "21/12",
-    "clancy",
-    ["bandito", "bishop"]
-];
-
-function loadQuestion() {
-    document.getElementById("question").textContent = questions[step];
-    document.getElementById("answer").value = "";
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("answer").focus();
+function pulse(el, cls){
+  el.classList.remove("pulse-green","pulse-red","pulse-yellow","pulse-bishop");
+  void el.offsetWidth; 
+  el.classList.add(cls);
 }
 
-function pulse(element, color) {
-    element.classList.remove("pulse-green", "pulse-red", "pulse-yellow");
-    void element.offsetWidth;
-    element.classList.add(color);
-}
+function playCorrect(){ document.getElementById("correctSound").play(); }
+function playFinal(){ document.getElementById("finalSound").play(); }
 
-function checkAnswer() {
-    let input = document.getElementById("answer");
-    let val = input.value.trim().toLowerCase();
-    let correct = answers[step];
+const q1=document.getElementById("q1");
+const q2=document.getElementById("q2");
+const q3=document.getElementById("q3");
 
-    let correctSound = document.getElementById("correct-sound");
-    let wrongSound = document.getElementById("wrong-sound");
+document.getElementById("b1").onclick = ()=>{
+  const v = norm(q1.value);
+  if(v==="21/12"){
+    pulse(q1,"pulse-green");
+    playCorrect();
+    step1.style.display="none";
+    step2.style.display="block";
+    q2.focus();
+  } else {
+    pulse(q1,"pulse-red");
+  }
+};
 
-    // Multiple choice question
-    if (Array.isArray(correct)) {
-        if (correct.includes(val)) {
-            if (val === "bandito") {
-                pulse(input, "pulse-yellow");
-                correctSound.play();
-                setTimeout(() => {
-                    showFinal("Song: <span style='color: yellow;'>Levitate</span>");
-                }, 800);
-            }
-            else if (val === "bishop") {
-                pulse(input, "pulse-red");
-                correctSound.play();
-                setTimeout(() => {
-                    showFinal("Song: <span style='color: red;'>City Walls</span>");
-                }, 800);
-            }
-            return;
-        } else {
-            pulse(input, "pulse-red");
-            wrongSound.play();
-            return;
-        }
-    }
+document.getElementById("b2").onclick = ()=>{
+  const v = norm(q2.value);
+  if(v==="clancy"){
+    pulse(q2,"pulse-green");
+    playCorrect();
+    step2.style.display="none";
+    step3.style.display="block";
+    q3.focus();
+  } else {
+    pulse(q2,"pulse-red");
+  }
+};
 
-    // Normal questions
-    if (val === correct) {
-        pulse(input, "pulse-green");
-        correctSound.play();
+document.getElementById("b3").onclick = ()=>{
+  const v = norm(q3.value);
+  if(!["bandito","bishop","obispo"].includes(v)){
+    pulse(q3,"pulse-red");
+    return;
+  }
 
-        step++;
-        if (step >= questions.length) {
-            setTimeout(() => showFinal("Completed."), 800);
-            return;
-        }
+  step3.style.display="none";
+  final.style.display="block";
 
-        setTimeout(loadQuestion, 800);
-    } else {
-        pulse(input, "pulse-red");
-        wrongSound.play();
-    }
-}
+  // BANDITO
+  if(v==="bandito"){
+    pulse(q3,"pulse-yellow");
+    document.getElementById("song").innerHTML =
+      "<span style='color:yellow;'>Song: Levitate</span>";
+    playFinal();
+  }
 
-function showFinal(text) {
-    document.getElementById("container").innerHTML = `
-        <h1>${text}</h1>
-        <button onclick="location.reload()">Restart</button>
-    `;
-}
-
-loadQuestion();
+  // BISHOP
+  if(v==="bishop" || v==="obispo"){
+    pulse(q3,"pulse-bishop");
+    document.getElementById("song").innerHTML =
+      "<span style='color:red;'>Song: City Walls</span>";
+    playFinal();
+  }
+};
 </script>
 
 </body>
 </html>
+
 
 
 
