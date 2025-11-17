@@ -61,7 +61,6 @@
       opacity:0.98;
       word-break:break-word;
     }
-    .muted{color:rgba(255,255,255,0.45);font-size:0.85rem;margin-top:0.6rem}
   </style>
 </head>
 <body>
@@ -72,14 +71,14 @@
       <button id="check">Comprobar</button>
     </div>
     <div id="result" aria-live="polite"></div>
-   
   </main>
 
   <script>
     (function(){
       const target = 'clancy is dead';
       const secret = "succeed: NTDCsDIyJzU5LjEiTiAzMMKwMjgnMTcuMiJF";
-      const link = <a href="https://rebelred.cl/404">dmaorg</a>;
+      const link = '<br><a href="https://rebelred.cl/404" style="color:#00f7ff;">dmaorg</a>';
+
       const input = document.getElementById('guess');
       const btn = document.getElementById('check');
       const result = document.getElementById('result');
@@ -88,20 +87,20 @@
         return (s||'').trim().replace(/\s+/g,' ').toLowerCase();
       }
 
-      function show(text){
-        result.textContent = text;
+      function showHTML(text){
+        result.innerHTML = text;
       }
 
       btn.addEventListener('click',()=>{
         const val = normalize(input.value);
+
         if(val === target){
-          show(secret)
-          show(link)
-        } ;
-        else show('ERROR\n hint:anagram');
+          showHTML(secret + link);
+        } else {
+          showHTML('ERROR<br>hint: anagram');
+        }
       });
 
-      // also allow Enter key
       input.addEventListener('keydown', (e)=>{
         if(e.key === 'Enter'){
           e.preventDefault();
@@ -109,9 +108,9 @@
         }
       });
 
-      // set focus for usability
       input.focus();
     })();
   </script>
 </body>
 </html>
+
