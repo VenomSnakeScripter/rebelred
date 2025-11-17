@@ -41,18 +41,6 @@ h1{
   width:100%; /* ← nunca cambia, nunca se mueve */
 }
 
-h1 .type{
-  display:inline-block;
-  overflow:hidden;
-  border-right:2px solid rgba(255,255,255,0.8);
-  width:31ch; /* ← ancho exacto */
-  animation: typing 3s steps(31,end), blink .7s step-end infinite;
-}
-
-
-
-@keyframes typing{ from{width:0;} to{width:26ch;} }
-@keyframes blink{ 50%{border-color:transparent;} }
 
   /* INPUTS */
 input[type="text"]{
