@@ -34,15 +34,16 @@ h1{
   margin:0 0 1.5rem;
   font-size:clamp(2rem,6vw,4rem);
   letter-spacing:0.1em;
-  white-space:normal;           /* ← permite salto de línea */
+  white-space:normal;
   text-align:center;
   line-height:1.2;
   display:inline-block;
   overflow:hidden;
   border-right:2px solid rgba(255,255,255,0.8);
-  width: 26ch;                  /* ← ajustado para 2 líneas */
-  animation: typing 3s steps(26,end), blink .7s step-end infinite;
+  width: 31ch; /* ← ANCHO EXACTO */
+  animation: typing 3s steps(31,end), blink .7s step-end infinite;
 }
+
 
 @keyframes typing{ from{width:0;} to{width:26ch;} }
 @keyframes blink{ 50%{border-color:transparent;} }
