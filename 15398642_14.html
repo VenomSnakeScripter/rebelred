@@ -37,12 +37,18 @@ h1{
   white-space:normal;
   text-align:center;
   line-height:1.2;
+  position: relative;
+  width:100%; /* ← nunca cambia, nunca se mueve */
+}
+
+h1 .type{
   display:inline-block;
   overflow:hidden;
   border-right:2px solid rgba(255,255,255,0.8);
-  width: 31ch; /* ← ANCHO EXACTO */
+  width:31ch; /* ← ancho exacto */
   animation: typing 3s steps(31,end), blink .7s step-end infinite;
 }
+
 
 
 @keyframes typing{ from{width:0;} to{width:26ch;} }
@@ -111,9 +117,12 @@ input[type="text"]{
 <body>
   <main class="wrap" role="main" aria-live="polite">
     <h1>
-  A RENDITION OF THE<br>
-  TRENCH SAGA
+  <span class="type">
+    A RENDITION OF THE<br>
+    TRENCH SAGA
+  </span>
 </h1>
+
 
 
     <!-- Step 1 -->
