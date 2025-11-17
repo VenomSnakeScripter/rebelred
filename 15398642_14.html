@@ -29,31 +29,36 @@
   }
 
   /* TITLE — FIXED WIDTH TYPEWRITER */
-  h1{
-    margin:0 0 1.5rem;
-    font-size:clamp(2rem,6vw,4rem);
-    letter-spacing:0.1em;
-    white-space:nowrap;
-    overflow:hidden;
-    width: 32ch;           /* ← ANCHO EXACTO DEL TEXTO */
-    border-right:2px solid rgba(255,255,255,0.8);
-    animation: typing 3s steps(32,end), blink .7s step-end infinite;
-  }
+  /* TITLE — TWO-LINE TYPEWRITER */
+h1{
+  margin:0 0 1.5rem;
+  font-size:clamp(2rem,6vw,4rem);
+  letter-spacing:0.1em;
+  white-space:normal;           /* ← permite salto de línea */
+  text-align:center;
+  line-height:1.2;
+  display:inline-block;
+  overflow:hidden;
+  border-right:2px solid rgba(255,255,255,0.8);
+  width: 26ch;                  /* ← ajustado para 2 líneas */
+  animation: typing 3s steps(26,end), blink .7s step-end infinite;
+}
 
-  @keyframes typing{ from{width:0;} to{width:32ch;} }
-  @keyframes blink{ 50%{border-color:transparent;} }
+@keyframes typing{ from{width:0;} to{width:26ch;} }
+@keyframes blink{ 50%{border-color:transparent;} }
 
   /* INPUTS */
-  input[type="text"]{
-    background:#000;
-    color:#fff;
-    border:1px solid rgba(255,255,255,0.22);
-    padding:0.7rem 1rem;
-    border-radius:8px;
-    min-width:260px;
-    font-size:1rem;
-    transition: box-shadow .25s ease;
-  }
+input[type="text"]{
+  background:#000;
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.22);
+  padding:0.7rem 1rem;
+  border-radius:8px;
+  min-width:360px;     /* ← más ancho */
+  max-width:420px;     /* ← evita romper diseño */
+  font-size:1rem;
+  transition: box-shadow .25s ease;
+}
 
   button{
     background:#111;
@@ -104,7 +109,11 @@
 </head>
 <body>
   <main class="wrap" role="main" aria-live="polite">
-    <h1>A RENDITION OF THE TRENCH SAGA</h1>
+    <h1>
+  A RENDITION OF THE<br>
+  TRENCH SAGA
+</h1>
+
 
     <!-- Step 1 -->
     <div id="step1" class="step">
