@@ -79,6 +79,7 @@
     (function(){
       const target = 'clancy is dead';
       const secret = "succeed: NTDCsDIyJzU5LjEiTiAzMMKwMjgnMTcuMiJF";
+      const link = <a href="https://rebelred.cl/404">dmaorg</a>;
       const input = document.getElementById('guess');
       const btn = document.getElementById('check');
       const result = document.getElementById('result');
@@ -93,7 +94,10 @@
 
       btn.addEventListener('click',()=>{
         const val = normalize(input.value);
-        if(val === target) show(secret);
+        if(val === target){
+          show(secret)
+          show(link)
+        } ;
         else show('ERROR\n hint:anagram');
       });
 
